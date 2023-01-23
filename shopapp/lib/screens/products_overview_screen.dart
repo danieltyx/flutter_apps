@@ -2,13 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/container.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:provider/provider.dart';
-import 'package:shopapp/badge.dart';
-import 'package:shopapp/cart.dart';
-import 'package:shopapp/models/product.dart';
-import 'package:shopapp/product_item.dart';
+import 'package:shopapp/widgets/app_drawer.dart';
+import 'package:shopapp/widgets/badge.dart';
+import 'package:shopapp/providers/cart.dart';
+import 'package:shopapp/providers/product.dart';
+import 'package:shopapp/widgets/product_item.dart';
 import 'package:shopapp/screens/cart_screen.dart';
 
-import '../product_grid.dart';
+import '../widgets/product_grid.dart';
 import '../providers/products.dart';
 
 enum FilterOptions { Favorites, all }
@@ -62,6 +63,7 @@ class _productsOverviewScreenState extends State<productsOverviewScreen> {
             )
           ],
         ),
+        drawer: AppDrawer(),
         body: ProductsGrid(_showOnlyFav));
   }
 }

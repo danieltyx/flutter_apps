@@ -1,12 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/container.dart';
-import 'package:flutter/src/widgets/framework.dart';
 import 'package:provider/provider.dart';
-import 'package:shopapp/cart.dart';
+import 'package:shopapp/providers/cart.dart' show Cart;
+import 'package:shopapp/widgets/cart_item.dart';
+import 'package:shopapp/providers/orders.dart';
 
 class cartScreen extends StatelessWidget {
   static const routeName = '/cart';
-  const cartScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -29,20 +28,30 @@ class cartScreen extends StatelessWidget {
                     Chip(
                       label: Text('\$${cart.totalAmount}'),
                     ),
-                    TextButton(onPressed: null, child: Text('Order Now'))
+                    TextButton(
+                        onPressed: () {
+                          Provider.of<Orders>(context, listen: false).addOrder(
+                              cart.items.values.toList(), cart.totalAmount);
+                          cart.clear();
+                        },
+                        child: Text('Order Now'))
                   ],
                 ),
               ),
             ),
-            SizedBox(height: 10,),
-            Expanded(child: ListView.builder(itemCount:
-            cart.items.length,
-            ,itemBuilder: (ctx,i){
-              
-            }
-            
-            ),)
-            
+            SizedBox(
+              height: 10,
+            ),
+            Expanded(
+              child: ListView.builder(
+                  itemCount: cart.items.length,
+                  itemBuilder: (ctx, i) => CartItem(
+                      cart.items.values.toList()[i].id,
+                      cart.items.keys.toList()[i],
+                      cart.items.values.toList()[i].price,
+                      cart.items.values.toList()[i].quantity,
+                      cart.items.values.toList()[i].title)),
+            )
           ],
         ));
   }

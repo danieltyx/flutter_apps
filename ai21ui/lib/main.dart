@@ -142,7 +142,7 @@ class ChatMessage extends StatelessWidget {
           children: <Widget>[
             new Text(this.name, style: Theme.of(context).textTheme.bodyLarge),
             new Container(
-              margin: const EdgeInsets.only(top: 5.0),
+              margin: const EdgeInsets.o nly(top: 5.0),
               child: new Text(text),
             ),
           ],
