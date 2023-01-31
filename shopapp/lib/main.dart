@@ -33,6 +33,7 @@ class MyApp extends StatelessWidget {
                   .copyWith(secondary: Colors.purple)),
           home: productsOverviewScreen(),
           routes: {
+            // '/': (ctx) => productsOverviewScreen(),
             ProductDetailScreen.routeName: (ctx) => ProductDetailScreen(),
             cartScreen.routeName: (ctx) => cartScreen(),
             OrdersScreen.routeName: (ctx) => OrdersScreen(),

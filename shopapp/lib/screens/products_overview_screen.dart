@@ -21,7 +21,34 @@ class productsOverviewScreen extends StatefulWidget {
 
 class _productsOverviewScreenState extends State<productsOverviewScreen> {
   var _showOnlyFav = false;
+  var _init = true;
+  var _isLoading = false;
+
+  // @override
+  // void initState() {
+  //   var _isLoading = true;
+  //   print("INITSTATE OVERVIEW");
+  //   Future.delayed(Duration.zero).then((value) {
+  //     Provider.of<Products>(context)
+  //         .fetchAndSetProducts()
+  //         .then((value) => _isLoading = false);
+  //   });
+  //   super.initState();
+  // }
+
   @override
+  void didChangeDependencies() {
+    var _isLoading = true;
+    if (_init) {
+      Provider.of<Products>(context)
+          .fetchAndSetProducts()
+          .then((value) => _isLoading = false);
+    }
+    _init = false;
+    super.didChangeDependencies();
+    // Perform setup or resource allocation that depends on the dependencies of the widget
+  }
+
   Widget build(BuildContext context) {
     final productsContainer = Provider.of<Products>(context, listen: false);
     return Scaffold(
@@ -54,7 +81,7 @@ class _productsOverviewScreenState extends State<productsOverviewScreen> {
               builder: (_, cart, ch) =>
                   Badge(value: cart.itemCount.toString(), child: ch!),
               child: IconButton(
-                  icon: Icon(
+                  icon: const Icon(
                     Icons.shopping_cart,
                   ),
                   onPressed: () {
@@ -64,6 +91,10 @@ class _productsOverviewScreenState extends State<productsOverviewScreen> {
           ],
         ),
         drawer: AppDrawer(),
-        body: ProductsGrid(_showOnlyFav));
+        body: _isLoading
+            ? const Center(
+                child: CircularProgressIndicator(),
+              )
+            : ProductsGrid(_showOnlyFav));
   }
 }
