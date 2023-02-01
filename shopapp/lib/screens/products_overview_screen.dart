@@ -22,7 +22,7 @@ class productsOverviewScreen extends StatefulWidget {
 class _productsOverviewScreenState extends State<productsOverviewScreen> {
   var _showOnlyFav = false;
   var _init = true;
-  var _isLoading = false;
+  var _isLoading = true;
 
   // @override
   // void initState() {
