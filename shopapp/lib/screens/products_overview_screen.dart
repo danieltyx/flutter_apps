@@ -38,11 +38,15 @@ class _productsOverviewScreenState extends State<productsOverviewScreen> {
 
   @override
   void didChangeDependencies() {
-    var _isLoading = true;
     if (_init) {
-      Provider.of<Products>(context)
-          .fetchAndSetProducts()
-          .then((value) => _isLoading = false);
+      setState(() {
+        _isLoading = true;
+      });
+      Provider.of<Products>(context).fetchAndSetProducts().then((value) {
+        setState(() {
+          _isLoading = false;
+        });
+      });
     }
     _init = false;
     super.didChangeDependencies();
