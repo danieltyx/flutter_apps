@@ -8,7 +8,7 @@ class Auth with ChangeNotifier {
   String? _token;
   DateTime? _expiryDate = null;
   String _userID = "";
-
+  String _apiKey = ""; 
   String? get token {
     if (_expiryDate != null &&
         _expiryDate!.isAfter(DateTime.now()) &&
@@ -28,7 +28,7 @@ class Auth with ChangeNotifier {
 
   Future<void> signup(String email, String password) async {
     final url = Uri.parse(
-        'https://identitytoolkit.googleapis.com/v1/accounts:signUp?key=AIzaSyCG1N7iEnmSszDE5rfb9XUdJ2xsLD97rbg');
+        'https://identitytoolkit.googleapis.com/v1/accounts:signUp?key=$_apiKey');
     try {
       final response = await http.post(url,
           body: jsonEncode({
@@ -52,7 +52,7 @@ class Auth with ChangeNotifier {
 
   Future<void> login(String email, String password) async {
     final url = Uri.parse(
-        'https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=AIzaSyCG1N7iEnmSszDE5rfb9XUdJ2xsLD97rbg');
+        'https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=$_apiKey');
     try {
       final response = await http.post(url,
           body: jsonEncode({
