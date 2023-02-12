@@ -40,8 +40,9 @@ class Products with ChangeNotifier {
   ];
   //var showFavOnly = false;
   final String authToken;
+  final String userId;
 
-  Products(this.authToken, this._items);
+  Products(this.authToken, this.userId, this._items);
 
   List<Product> get items {
     return [..._items];
@@ -51,12 +52,24 @@ class Products with ChangeNotifier {
     return _items.where((element) => element.isFavorite == true).toList();
   }
 
-  Future<void> fetchAndSetProducts() async {
-    final url = Uri.parse(
-        'https://flutter-update-a4320-default-rtdb.firebaseio.com/products.json?auth=$authToken');
+  Future<void> fetchAndSetProducts([bool filterByUser = false]) async {
+    final filterString =
+        filterByUser ? 'orderBy="creatorId"&equalTo="$userId"' : '';
+    print(filterString);
+    var url = Uri.parse(
+        'https://flutter-update-a4320-default-rtdb.firebaseio.com/products.json?auth=$authToken&$filterString');
     try {
       final response = await http.get(url);
       final extractedData = json.decode(response.body) as Map<String, dynamic>;
+      if (extractedData == null) {
+        return;
+      }
+      url = Uri.parse(
+          'https://flutter-update-a4320-default-rtdb.firebaseio.com/userFavorite/$userId.json?auth=$authToken');
+
+      final favoriteResponse = await http.get(url);
+      final favoriteData = json.decode(favoriteResponse.body);
+
       final List<Product> loadedProducts = [];
       extractedData.forEach((key, value) {
         loadedProducts.add(Product(
@@ -64,7 +77,8 @@ class Products with ChangeNotifier {
             title: value['title'],
             description: value['description'],
             price: value['price'].toDouble(),
-            isFavorite: value['isFavorite'],
+            isFavorite:
+                favoriteData == null ? false : favoriteData[key] ?? false,
             imageUrl: value['imageUrl']));
       });
       _items = loadedProducts;
@@ -76,7 +90,7 @@ class Products with ChangeNotifier {
 
   Future<void> addProduct(Product product) async {
     final url = Uri.parse(
-        'https://flutter-update-a4320-default-rtdb.firebaseio.com/products.json?auth=$authToken');
+        'https://flutter-update-a4320-default-rtdb.firebaseio.com/products.json?auth=$authToken&orderBy="creatorID"&equalTo="$userId"');
 
     try {
       final response = await http.post(
@@ -87,6 +101,7 @@ class Products with ChangeNotifier {
           'imageUrl': product.imageUrl,
           'price': product.price,
           'isFavorite': product.isFavorite,
+          'ucreatorID': userId,
         }),
       );
 

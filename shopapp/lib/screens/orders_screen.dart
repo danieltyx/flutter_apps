@@ -1,24 +1,45 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/container.dart';
-import 'package:flutter/src/widgets/framework.dart';
 import 'package:provider/provider.dart';
-import 'package:shopapp/providers/cart.dart';
-import 'package:shopapp/providers/orders.dart' as ord;
-import 'package:shopapp/widgets/app_drawer.dart';
-import 'package:shopapp/widgets/order_item.dart' as oi;
-import 'package:shopapp/widgets/cart_item.dart' as ci;
+
+import '../providers/orders.dart' show Orders;
+import '../widgets/order_item.dart';
+import '../widgets/app_drawer.dart';
 
 class OrdersScreen extends StatelessWidget {
   static const routeName = '/orders';
+
   @override
   Widget build(BuildContext context) {
-    final orders = Provider.of<ord.Orders>(context).orders;
-
+    print('building orders');
+    // final orderData = Provider.of<Orders>(context);
     return Scaffold(
-        appBar: AppBar(title: Text('Orders')),
-        drawer: AppDrawer(),
-        body: ListView.builder(
-            itemCount: orders.length,
-            itemBuilder: ((context, index) => oi.OrderItem(orders[index]))));
+      appBar: AppBar(
+        title: Text('Your Orders'),
+      ),
+      drawer: AppDrawer(),
+      body: FutureBuilder(
+        future: Provider.of<Orders>(context, listen: false).fetchAndSetOrders(),
+        builder: (ctx, dataSnapshot) {
+          if (dataSnapshot.connectionState == ConnectionState.waiting) {
+            return Center(child: CircularProgressIndicator());
+          } else {
+            if (dataSnapshot.error != null) {
+              // ...
+              // Do error handling stuff
+              return Center(
+                child: Text('An error occurred!'),
+              );
+            } else {
+              return Consumer<Orders>(
+                builder: (ctx, orderData, child) => ListView.builder(
+                  itemCount: orderData.orders.length,
+                  itemBuilder: (ctx, i) => OrderItem(orderData.orders[i]),
+                ),
+              );
+            }
+          }
+        },
+      ),
+    );
   }
 }
