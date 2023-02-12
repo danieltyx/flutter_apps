@@ -54,10 +54,11 @@ class Products with ChangeNotifier {
 
   Future<void> fetchAndSetProducts([bool filterByUser = false]) async {
     final filterString =
-        filterByUser ? 'orderBy="creatorId"&equalTo="$userId"' : '';
-    print(filterString);
+        filterByUser ? 'orderBy="creatorID"&equalTo="$userId"' : '';
+
     var url = Uri.parse(
         'https://flutter-update-a4320-default-rtdb.firebaseio.com/products.json?auth=$authToken&$filterString');
+    print(url);
     try {
       final response = await http.get(url);
       final extractedData = json.decode(response.body) as Map<String, dynamic>;
@@ -90,7 +91,7 @@ class Products with ChangeNotifier {
 
   Future<void> addProduct(Product product) async {
     final url = Uri.parse(
-        'https://flutter-update-a4320-default-rtdb.firebaseio.com/products.json?auth=$authToken&orderBy="creatorID"&equalTo="$userId"');
+        'https://flutter-update-a4320-default-rtdb.firebaseio.com/products.json?auth=$authToken');
 
     try {
       final response = await http.post(

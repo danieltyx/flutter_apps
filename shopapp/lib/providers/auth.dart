@@ -8,7 +8,7 @@ class Auth with ChangeNotifier {
   String? _token;
   DateTime? _expiryDate = null;
   String _userID = "";
-  String _apiKey = ""; 
+  String _apiKey = " AIzaSyCG1N7iEnmSszDE5rfb9XUdJ2xsLD97rbg";
   String? get token {
     if (_expiryDate != null &&
         _expiryDate!.isAfter(DateTime.now()) &&
