@@ -73,4 +73,11 @@ class Auth with ChangeNotifier {
       rethrow;
     }
   }
+
+  void logout() {
+    _token = "";
+    _userID = "";
+    _expiryDate = DateTime.now();
+    notifyListeners();
+  }
 }
