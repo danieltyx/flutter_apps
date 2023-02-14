@@ -75,8 +75,8 @@ class Auth with ChangeNotifier {
   }
 
   void logout() {
-    _token = "";
-    _userID = "";
+    _token = "1";
+    _userID = "1";
     _expiryDate = DateTime.now();
     notifyListeners();
   }
