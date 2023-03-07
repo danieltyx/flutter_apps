@@ -46,7 +46,7 @@ class _State extends State<_Body> {
     points.add(LatLng(39.966069 + offset, 116.289253));
     points.add(LatLng(39.944226 + offset, 116.306076));
     points.add(LatLng(39.966069 + offset, 116.322899));
-    points.add(LatLng(39.938698 + offset, 116.336975));
+    points.add(LatLng(40.500652197122086 + offset, -74.48335293234557));
     return points;
   }
 
