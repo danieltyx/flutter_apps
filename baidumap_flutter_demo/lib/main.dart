@@ -23,9 +23,8 @@ Future<void> main() async {
 
   // 百度地图sdk初始化鉴权
   if (Platform.isIOS) {
-    myLocPlugin.authAK('qsydh2orQClIoe4bslYPXZyPITVfVNyh');
-    BMFMapSDK.setApiKeyAndCoordType(
-        'qsydh2orQClIoe4bslYPXZyPITVfVNyh', BMF_COORD_TYPE.BD09LL);
+    myLocPlugin.authAK(AK);
+    BMFMapSDK.setApiKeyAndCoordType('AK', BMF_COORD_TYPE.BD09LL);
   } else if (Platform.isAndroid) {
     /// 初始化获取Android 系统版本号，如果低于10使用TextureMapView 等于大于10使用Mapview
     await BMFAndroidVersion.initAndroidVersion();
