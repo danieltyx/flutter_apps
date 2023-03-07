@@ -117,8 +117,7 @@ class Products with ChangeNotifier {
     } catch (error) {
       print(error);
       throw error;
-    }
-    ;
+    } ;
   }
 
   Product findbyId(String id) {
